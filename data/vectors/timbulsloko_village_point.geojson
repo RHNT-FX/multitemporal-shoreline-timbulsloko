@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Timbulsloko",
+        "source": "OpenStreetMap node 10937127475",
+        "attribution": "(c) OpenStreetMap contributors, ODbL 1.0",
+        "note": "Village centre point only; OSM has no desa boundary polygon here"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          110.5181694,
+          -6.9135182
+        ]
+      }
+    }
+  ]
+}

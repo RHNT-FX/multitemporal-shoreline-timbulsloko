@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "sea_seed",
+        "note": "~4-5 km offshore of the OSM coastline; confirm it is open sea on every scene"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          110.47,
+          -6.875
+        ]
+      }
+    }
+  ]
+}

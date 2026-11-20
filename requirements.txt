@@ -1,0 +1,18 @@
+# Pin exact versions (pip freeze) after the first working Colab run.
+numpy
+scipy
+pandas
+matplotlib
+pyyaml
+rasterio
+pyproj
+shapely>=2.0
+geopandas
+scikit-image
+opencv-python-headless
+
+# optional
+earthengine-api      # scene search + AOI export only (brief rule)
+pyTMD                # tide prediction (EOT20)
+scikit-learn         # bonus classifier (E10)
+streamlit            # bonus UI

@@ -1,0 +1,30 @@
+# Raster data lives on Drive, not in git
+data/raw/*
+data/interim/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+*.TIF
+*.tif
+*.tiff
+*.jp2
+*.SAFE/
+*.zip
+!data/processed/*.tif
+
+# Python / notebooks
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Earth Engine / credentials
+*.json.key
+credentials*

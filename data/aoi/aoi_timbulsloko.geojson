@@ -1,0 +1,44 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "AOI Timbulsloko - Sayung coast",
+        "crs_working": "EPSG:32749",
+        "approx_size_km": "11.1 x 12.2",
+        "landsat_wrs2": "120/065 (verify)",
+        "sentinel2_mgrs": "T49MDN (verify)",
+        "created": "2026-11-20",
+        "basis": "Fitted around the OSM coastline and the OSM Timbulsloko village node; verify on imagery"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              110.45,
+              -6.95
+            ],
+            [
+              110.55,
+              -6.95
+            ],
+            [
+              110.55,
+              -6.84
+            ],
+            [
+              110.45,
+              -6.84
+            ],
+            [
+              110.45,
+              -6.95
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

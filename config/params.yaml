@@ -1,0 +1,90 @@
+# Every tunable parameter of the pipeline lives here (see files/02_PIPELINE_METHODS.md).
+# Change values here, never inside notebooks. Units are in the comments.
+
+project:
+  name: multitemporal-shoreline-timbulsloko
+  seed: 2026                       # random seed for sampling / ML
+
+paths:
+  # DATA_ROOT env var overrides this (e.g. /content/drive/MyDrive/pcd_timbulsloko on Colab)
+  data_root: data
+  aoi: data/aoi/aoi_timbulsloko.geojson
+  sea_seed: data/vectors/sea_seed.geojson
+  village_point: data/vectors/timbulsloko_village_point.geojson
+  osm_coastline: data/vectors/osm_coastline_ref.geojson
+  transect_baseline: data/vectors/baseline.geojson      # drawn in QGIS (TODO M3)
+  scenes_table: metadata/scenes.csv
+  candidates_table: metadata/candidates.csv
+  tides_table: metadata/tides.csv
+  baseline_dir: data/baseline
+  outputs: outputs
+
+grid:
+  crs: EPSG:32749                  # WGS 84 / UTM zone 49S
+  res_s2: 10                       # m
+  res_landsat: 30                  # m
+
+scene_selection:
+  months: [5, 6, 7, 8, 9, 10]      # dry season
+  max_cloud_scene_pct: 40          # provider pre-filter
+  max_cloud_aoi_pct: 10            # our own AOI cloud % (QA_PIXEL / SCL)
+  tide_tolerance_m: 0.15           # max |tide - reference level|
+  pair_max_days: 3                 # Landsat/S2 near-same-date pair (E8)
+
+radiometry:
+  landsat_scale: 0.0000275
+  landsat_offset: -0.2
+  s2_quantification: 10000
+  s2_offset_from_baseline: "04.00" # BOA/RADIO_ADD_OFFSET = -1000 from this baseline on
+  s2_offset_dn: -1000
+
+masks:
+  landsat_qa_bits: [0, 1, 2, 3, 4] # fill, dilated cloud, cirrus, cloud, shadow
+  s2_scl_invalid: [0, 1, 3, 8, 9, 10]
+  s2cloudless_prob: 0.4            # 2016 L1C only
+  dilate_px: 1
+
+preprocessing:
+  swir_resampling: bilinear        # E6 compares nearest | bilinear | cubic
+  denoise: median                  # E2 compares none | gaussian | median | bilateral | fft_lowpass
+  gaussian_sigma: 1.0
+  median_size: 3
+  bilateral_d: 5
+  coreg_upsample: 10               # phase-correlation sub-pixel factor
+  coreg_max_shift_px: 0.5          # correct the shift above this
+  display_stretch_pct: [2, 98]
+  clahe_clip: 2.0
+  clahe_tiles: [8, 8]
+
+indices:
+  main: mndwi                      # final choice comes from E1
+  candidates: [ndwi, mndwi, awei_nsh, awei_sh]
+
+segmentation:
+  threshold_method: otsu_buffer    # E3: fixed | otsu | otsu_buffer | multi_otsu | hysteresis
+  fixed_threshold: 0.0
+  otsu_bins: 256
+  coastal_buffer_m: 1500
+  min_object_px_s2: 10             # 0.1 ha
+  min_object_px_landsat: 3         # 0.27 ha
+  open_radius: 1
+  close_radius: 1
+  sea_erosion_radius: 2            # E4 compares 0 | 1 | 2 | 3
+  contour_band_px: 2               # keep sub-pixel contour within this of the Sea boundary
+  canny_sigma: 2.0
+
+representation:
+  dp_epsilon_px: 0.5               # Douglas-Peucker tolerance
+  fd_points: 512                   # arc-length resampling for Fourier descriptors
+  fd_harmonics: [4, 8, 16, 32]
+
+change:
+  transect_spacing_m: 50
+  transect_length_m: 4000
+  intersection_rule: seaward       # seaward | landward
+  epochs: [2016, 2018, 2020, 2022, 2024, 2026]
+
+evaluation:
+  baseline_points_per_epoch: 200
+  coastal_zone_points: 160
+  inter_annotator_points: 50
